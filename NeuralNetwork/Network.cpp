@@ -1,10 +1,11 @@
 #include "Network.h"
 #include <vector>
 #include "Neuron.h"
+#include <string>
 
 
-Network::Network(int inputs, int hiddenQty, int hiddenLayers, int outputs) {
-
+Network::Network(std::string name, int inputs, int hiddenQty, int hiddenLayers, int outputs) {
+	Name = name;
 	std::vector<double> tvec(inputs);
 	Network::inputs = tvec;
 
@@ -12,16 +13,15 @@ Network::Network(int inputs, int hiddenQty, int hiddenLayers, int outputs) {
 
 	for (size_t i = 0; i < hiddenLayers; i++)
 	{
-
-
-
+			   
 
 
 	}
 
 }
 
-Network::Network(Neuron perceptron) {
+Network::Network(std::string name, Neuron perceptron) {
+	Name = name;
 	OutputLayer = { perceptron };
 	size_t pinputs = perceptron.input.size();
 	std::vector<double> tinputs;
@@ -32,7 +32,8 @@ Network::Network(Neuron perceptron) {
 	inputs = tinputs;
 }
 
-Network::Network(std::vector<Neuron> neurons) {
+Network::Network(std::string name , std::vector<Neuron> neurons) {
+	Name = name;
 	OutputLayer = neurons;
 	size_t pinputs = neurons[0].input.size();
 	std::vector<double> tinputs;
@@ -45,8 +46,9 @@ Network::Network(std::vector<Neuron> neurons) {
 
 
 
-Network::Network(int inputs, std::vector<Neuron> hidden, std::vector<Neuron> outputs)
+Network::Network(std::string name, int inputs, std::vector<Neuron> hidden, std::vector<Neuron> outputs)
 {
+	Name = name;
 	std::vector<double> linputs(inputs);
 	Network::inputs = linputs;
 	std::vector<std::vector<Neuron>> hiddenlayer;
@@ -112,6 +114,63 @@ std::vector<double> CalculateOutput(std::vector<double> inputs, std::vector<std:
 	}
 	return results;
 }
+
+
+std::string Network::OUTPUT_NETWORK_INFO() {
+	std::string tresult;
+	tresult.append("\n\n============INFORMACION SOBRE LA RED============");
+	tresult.append("\nNombre: ");
+	tresult.append(Name);
+	tresult.append("\nEntradas: "); 
+	tresult.append(std::to_string(inputs.size()));
+	size_t hiddenLayers = HiddenLayers.size();
+	for (size_t layerindex = 0; layerindex < hiddenLayers; layerindex++)
+	{
+		tresult.append("\nCapa oculta ");
+		tresult.append(std::to_string(layerindex));
+		tresult.append(":");
+		size_t ncount = HiddenLayers[layerindex].size();
+		for (size_t nindex = 0; nindex < ncount; nindex++)
+		{
+			tresult.append("\n  Neurona "); 
+			tresult.append(std::to_string(nindex)); 
+			tresult.append(":");
+			tresult.append("\n    Pesos: ");
+			size_t nweights = HiddenLayers[layerindex][nindex].input.size();
+			tresult.append("{");
+			for (size_t w = 0; w < nweights; w++)
+			{
+				tresult.append(std::to_string(HiddenLayers[layerindex][nindex].input[w][1]));
+				if (w < nweights - 1) {
+					tresult.append(",");
+				}
+			}
+			tresult.append("}");
+		}
+	}
+	tresult.append("\nCapa de salida:");
+	size_t ncount = OutputLayer.size();
+	for (size_t nindex = 0; nindex < ncount; nindex++)
+	{
+		tresult.append("\n  Neurona "); 
+		tresult.append(std::to_string(nindex)); 
+		tresult.append(":");
+		tresult.append("\n    Pesos: ");
+		size_t nweights = OutputLayer[nindex].input.size();
+		tresult.append("{");
+		for (size_t w = 0; w < nweights; w++)
+		{
+			tresult.append(std::to_string(OutputLayer[nindex].input[w][1]));
+			if (w < nweights - 1) {
+				tresult.append(",");
+			}
+		}
+		tresult.append("}");
+	}
+	tresult.append("\n================================================");
+	return tresult;
+}
+
 
 
 Network::~Network()

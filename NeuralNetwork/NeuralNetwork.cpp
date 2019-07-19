@@ -5,6 +5,7 @@
 #include <ctime>
 #include "Neuron.h"
 #include "Network.h"
+#include <string>
 
 bool checkinput() {
 
@@ -17,51 +18,6 @@ bool checkinput() {
 	return true;
 }
 
-
-void OUTPUT_NETWORK_INFO(Network nnetwork) {
-
-	std::cout << "\n\n============INFORMACION SOBRE LA RED============";
-	std::cout << "\nEntradas: "; std::cout << nnetwork.inputs.size();
-	size_t hiddenLayers = nnetwork.HiddenLayers.size();
-	for (size_t layerindex = 0; layerindex < hiddenLayers; layerindex++)
-	{
-		std::cout << "\nCapa oculta "; std::cout << layerindex; std::cout << ":";
-		size_t ncount = nnetwork.HiddenLayers[layerindex].size();
-		for (size_t nindex = 0; nindex < ncount; nindex++)
-		{
-			std::cout << "\n  Neurona "; std::cout << nindex; std::cout << ":";
-			std::cout << "\n    Pesos: ";
-			size_t nweights = nnetwork.HiddenLayers[layerindex][nindex].input.size();
-			std::cout << "{";
-			for (size_t w = 0; w < nweights; w++)
-			{
-				std::cout << nnetwork.HiddenLayers[layerindex][nindex].input[w][1];
-				if (w < nweights - 1) {
-					std::cout << ",";
-				}
-			}
-			std::cout << "}";
-		}
-	}
-	std::cout << "\nCapa de salida:";
-	size_t ncount = nnetwork.OutputLayer.size();
-	for (size_t nindex = 0; nindex < ncount; nindex++)
-	{
-		std::cout << "\n  Neurona "; std::cout << nindex; std::cout << ":";
-		std::cout << "\n    Pesos: ";
-		size_t nweights = nnetwork.OutputLayer[nindex].input.size();
-		std::cout << "{";
-		for (size_t w = 0; w < nweights; w++)
-		{
-			std::cout << nnetwork.OutputLayer[nindex].input[w][1];
-			if (w < nweights - 1) {
-				std::cout << ",";
-			}
-		}
-		std::cout << "}";
-	}
-	std::cout << "\n================================================";
-}
 
 void XOR_GATE_EXCERCISE() {
 	std::cout << "Entrenando...";
@@ -101,16 +57,16 @@ void XOR_GATE_EXCERCISE() {
 
 	std::vector<Neuron> hiddenlayer = { OR_perceptron , AND_perceptron };
 	std::vector<Neuron> outputlayer = { XOR_perceptron };
-	Network XOR_Network = Network(2, hiddenlayer, outputlayer);
+	Network XOR_Network = Network((std::string)"Puerta XOR",2, hiddenlayer, outputlayer);
 
-	OUTPUT_NETWORK_INFO(XOR_Network);
+	std::cout << XOR_Network.OUTPUT_NETWORK_INFO();
 
 	double a;
 	double b;
-
 	while (true)
 	{
-		std::cout << "\n\n\nEntrada A:"; std::cin >> a;
+		std::cout << "\n\n\nPruebas de funcionamiento:";
+		std::cout << "\nEntrada A:"; std::cin >> a;
 		checkinput();
 		std::cout << "\nEntrada B:"; std::cin >> b;
 		checkinput();
@@ -141,8 +97,8 @@ void PerceptronExercise() {
 	std::cout << "\nEntrenamiento completo.";
 	std::cout << "\n"; std::cout << tperceptron.itCount; std::cout << " iteraciones";
 	std::cout << " en "; std::cout << elapsed_secs; std::cout << " segundos.";
-	Network tnet = Network(tperceptron);
-	OUTPUT_NETWORK_INFO(tnet);
+	Network tnet = Network((std::string)"Perceptron múltiples entradas" ,tperceptron);
+	std::cout << tnet.OUTPUT_NETWORK_INFO();
 }
 
 
