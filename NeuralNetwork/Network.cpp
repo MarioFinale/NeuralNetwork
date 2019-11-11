@@ -3,7 +3,6 @@
 #include "Neuron.h"
 #include <string>
 
-
 Network::Network(std::string name, int inputs, int hiddenQty, int hiddenLayers, int outputs) {
 	Name = name;
 	std::vector<double> tvec(inputs);
@@ -43,8 +42,6 @@ Network::Network(std::string name , std::vector<Neuron> neurons) {
 	}
 	inputs = tinputs;
 }
-
-
 
 Network::Network(std::string name, int inputs, std::vector<Neuron> hidden, std::vector<Neuron> outputs)
 {
@@ -115,7 +112,6 @@ std::vector<double> CalculateOutput(std::vector<double> inputs, std::vector<std:
 	return results;
 }
 
-
 std::string Network::OUTPUT_NETWORK_INFO() {
 	std::string tresult;
 	tresult.append("\n\n============INFORMACION SOBRE LA RED============");
@@ -170,8 +166,6 @@ std::string Network::OUTPUT_NETWORK_INFO() {
 	tresult.append("\n================================================");
 	return tresult;
 }
-
-
 
 Network::~Network()
 {
